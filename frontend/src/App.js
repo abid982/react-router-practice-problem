@@ -1,3 +1,13 @@
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+
+import RootLayout from './pages/Root';
+import EventsRootLayout from './pages/EventsRoot';
+import HomePage from './pages/Home';
+import EventsPage from './pages/Events';
+import EventDetailPage from './pages/EventDetail';
+import NewEventPage from './pages/NewEvent';
+import EditEventPage from './pages/EditEvent';
+
 // Challenge / Exercise
 
 // 1. Add five new (dummy) page components (content can be simple <h1> elements)
@@ -20,8 +30,87 @@
 // 7. Output the ID of the selected event on the EventDetailPage
 // BONUS: Add another (nested) layout route that adds the <EventNavigation> component above all /events... page components
 
+/*
+// Absolute Paths
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <RootLayout />,
+    children: [
+      // { index: '/, element: <HomePage /> },
+      { index: true, element: <HomePage /> },
+      { path: '/events', element: <EventsPage /> },
+      { path: '/events/:eventId', element: <EventDetailPage /> },
+      // React router is smart so it would prefer /events/new over /events/:eventId router definition
+      { path: '/events/new', element: <NewEventPage /> },
+      { path: '/events/:eventId/edit', element: <EditEventPage /> },
+    ],
+  },
+]);
+*/
+
+// Relative Paths
+/*
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <RootLayout />,
+    children: [
+      // { index: '/, element: <HomePage /> },
+      { index: true, element: <HomePage /> },
+      { path: 'events', element: <EventsPage /> },
+      { path: 'events/:eventId', element: <EventDetailPage /> },
+      // React router is smart so it would prefer /events/new over /events/:eventId router definition
+      { path: 'events/new', element: <NewEventPage /> },
+      { path: 'events/:eventId/edit', element: <EditEventPage /> },
+    ],
+  },
+]);
+*/
+
+const router = createBrowserRouter([
+  {
+    // Nested routes
+    path: '/',
+    element: <RootLayout />,
+    children: [
+      // { index: '/, element: <HomePage /> },
+      { index: true, element: <HomePage /> },
+      {
+        path: 'events',
+        element: <EventsRootLayout />,
+        children: [
+          // { path: 'events', element: <EventsPage /> },
+          {
+            index: true,
+            element: <EventsPage />,
+            loader: async () => {
+              const response = await fetch('http://localhost:8080/events');
+
+              if (!response.ok) {
+                // setError('Fetching events failed.');
+                // ...
+              } else {
+                const resData = await response.json();
+
+                // Get events data
+                return resData.events;
+              }
+            },
+          },
+          { path: ':eventId', element: <EventDetailPage /> },
+          // React router is smart so it would prefer /events/new over /events/:eventId router definition
+          { path: 'new', element: <NewEventPage /> },
+          { path: ':eventId/edit', element: <EditEventPage /> },
+        ],
+      },
+    ],
+  },
+]);
+
 function App() {
-  return <div></div>;
+  // return <div></div>;
+  return <RouterProvider router={router} />;
 }
 
 export default App;
