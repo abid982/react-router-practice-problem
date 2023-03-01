@@ -9,6 +9,7 @@ import EventsPage, { loader as eventsLoader } from './pages/Events';
 import EventDetailPage from './pages/EventDetail';
 import NewEventPage from './pages/NewEvent';
 import EditEventPage from './pages/EditEvent';
+import ErrorPage from './pages/Error';
 
 // Challenge / Exercise
 
@@ -75,6 +76,7 @@ const router = createBrowserRouter([
     // Nested routes
     path: '/',
     element: <RootLayout />,
+    errorElement: <ErrorPage />,
     children: [
       // { index: '/, element: <HomePage /> },
       { index: true, element: <HomePage /> },
@@ -106,6 +108,8 @@ const router = createBrowserRouter([
             //     // Get events array data
             //     return resData.events;
             //   }
+            // We could add error element to this route as well and in this case, this error element would be rendered if this loader throw an error
+            // errorElement
             loader: eventsLoader,
           },
           { path: ':eventId', element: <EventDetailPage /> },

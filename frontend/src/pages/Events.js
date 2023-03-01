@@ -46,11 +46,23 @@ import { useLoaderData } from 'react-router-dom';
 // Returns a promise
 // Automatically resolved promise by React Router
 
+//
+
 import EventsList from '../components/EventsList';
 
 function EventsPage() {
   //   const events = useLoaderData();
   const data = useLoaderData();
+
+  // In our component code we will check
+  if (data.isError) {
+    console.log('Error from loader function:');
+    console.log(data);
+
+    // Return error message
+    return <p>{data.message}</p>;
+  }
+
   const events = data.events;
 
   return <EventsList events={events} />;
@@ -74,6 +86,19 @@ export const loader = async () => {
   if (!response.ok) {
     // setError('Fetching events failed.');
     // ...
+    //   Return a different response or data
+    //   So we now returned this data package instead of the response returned by our API request
+    // return { isError: true, message: 'Coul not fetch data' };
+
+    // Throw an error for this we can construct a new error object with the built in error or we throw any other kind of object as an error.
+    //   throw Error()
+    //   When we throw an error then errors will bubble up
+    // throw { mesage: 'Could not fetch events.' };
+
+    //   Throw a Response
+    throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
+      status: 500,
+    });
   } else {
     // const resData = await response.json();
 
