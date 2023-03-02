@@ -13,11 +13,11 @@ router.get('/', async (req, res, next) => {
   try {
     const events = await getAll();
     // res.json({ events: events });
-    // setTimeout(() => {
-    //   // Send response after one and half seconds
-    //   res.json({ events: events });
-    // }, 1500);
-    res.json({ events: events });
+    setTimeout(() => {
+      // Send response after one and half seconds
+      res.json({ events: events });
+    }, 1000);
+    // res.json({ events: events });
   } catch (error) {
     next(error);
   }

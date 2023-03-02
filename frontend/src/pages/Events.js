@@ -42,7 +42,7 @@
 // This is a special hook to get access to the closest loader data
 // closest loader data?
 // Component function is way leaner
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, json } from 'react-router-dom';
 // Returns a promise
 // Automatically resolved promise by React Router
 
@@ -89,16 +89,16 @@ export const loader = async () => {
     //   Return a different response or data
     //   So we now returned this data package instead of the response returned by our API request
     // return { isError: true, message: 'Coul not fetch data' };
-
     // Throw an error for this we can construct a new error object with the built in error or we throw any other kind of object as an error.
     //   throw Error()
     //   When we throw an error then errors will bubble up
     // throw { mesage: 'Could not fetch events.' };
-
     //   Throw a Response
-    throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
-      status: 500,
-    });
+    // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
+    //   status: 500,
+    // });
+    // The json() function
+    throw json({ message: 'Could not fetch events.' }, { status: 500 });
   } else {
     // const resData = await response.json();
 

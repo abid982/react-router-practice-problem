@@ -6,7 +6,9 @@ import HomePage from './pages/Home';
 // Alias
 // Pointer at that function
 import EventsPage, { loader as eventsLoader } from './pages/Events';
-import EventDetailPage from './pages/EventDetail';
+import EventDetailPage, {
+  loader as eventDetailLoader,
+} from './pages/EventDetail';
 import NewEventPage from './pages/NewEvent';
 import EditEventPage from './pages/EditEvent';
 import ErrorPage from './pages/Error';
@@ -112,7 +114,12 @@ const router = createBrowserRouter([
             // errorElement
             loader: eventsLoader,
           },
-          { path: ':eventId', element: <EventDetailPage /> },
+          // Register loader
+          {
+            path: ':eventId',
+            element: <EventDetailPage />,
+            loader: eventDetailLoader,
+          },
           // React router is smart so it would prefer /events/new over /events/:eventId router definition
           { path: 'new', element: <NewEventPage /> },
           { path: ':eventId/edit', element: <EditEventPage /> },

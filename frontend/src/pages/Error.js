@@ -16,7 +16,8 @@ const ErrorPage = () => {
     console.log('Error object:');
     console.log(error);
 
-    message = JSON.parse(error.data).message;
+    // message = JSON.parse(error.data).message;
+    message = error.data.message;
   }
 
   if (error.status === 404) {
