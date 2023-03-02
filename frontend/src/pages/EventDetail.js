@@ -1,5 +1,7 @@
 // import { useParams, json } from 'react-router-dom';
-import { useLoaderData, json } from 'react-router-dom';
+// import { useLoaderData, json } from 'react-router-dom';
+import { useRouteLoaderData, json } from 'react-router-dom';
+
 import EventItem from './../components/EventItem';
 
 const EventDetailPage = () => {
@@ -9,17 +11,24 @@ const EventDetailPage = () => {
   // console.log('Params:');
   // console.log(params);
 
-  const data = useLoaderData();
+  // const data = useLoaderData();
 
-  console.log('Loader data:');
-  console.log(data);
+  // console.log('Loader data:');
+  // console.log(data);
+
+  // Instead of using useLoaderData() hook we use a slightly different hook which is called useRouteLoaderData()
+  // This hook works almost like useLoaderData() but it takes a route id as an argument.
+
+  const data = useRouteLoaderData('event-detail');
+  const event = data.event;
 
   return (
     // <>
     //   <h1>Event Detail Page</h1>
     //   <p>Event ID: {params.eventId}</p>
     // </>
-    <EventItem event={data.event} />
+    // <EventItem event={event} />
+    <EventItem event={event} />
   );
 };
 

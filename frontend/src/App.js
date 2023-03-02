@@ -73,6 +73,62 @@ const router = createBrowserRouter([
 ]);
 */
 
+// const router = createBrowserRouter([
+//   {
+//     // Nested routes
+//     path: '/',
+//     element: <RootLayout />,
+//     errorElement: <ErrorPage />,
+//     children: [
+//       // { index: '/, element: <HomePage /> },
+//       { index: true, element: <HomePage /> },
+//       {
+//         path: 'events',
+//         element: <EventsRootLayout />,
+//         children: [
+//           // { path: 'events', element: <EventsPage /> },
+//           {
+//             index: true,
+//             element: <EventsPage />,
+//             // Extra property which you can add to your route definitions
+//             // loader property
+//             // It wants function as a value
+//             // It will execute by a react-router just before the component gets rendered
+//             // We wanna get that data to that events page component
+//             // When you define a function the React Router will automatically take any value you return in that function for example the response data and data is available to that component
+//             // loader: async () => {
+//             //   console.log('Loader function!');
+//             //   // Load and fetch data and evaluate response
+//             //   const response = await fetch('http://localhost:8080/events');
+
+//             //   if (!response.ok) {
+//             //     // setError('Fetching events failed.');
+//             //     // ...
+//             //   } else {
+//             //     const resData = await response.json();
+
+//             //     // Get events array data
+//             //     return resData.events;
+//             //   }
+//             // We could add error element to this route as well and in this case, this error element would be rendered if this loader throw an error
+//             // errorElement
+//             loader: eventsLoader,
+//           },
+//           // Register loader
+//           {
+//             path: ':eventId',
+//             element: <EventDetailPage />,
+//             loader: eventDetailLoader,
+//           },
+//           // React router is smart so it would prefer /events/new over /events/:eventId router definition
+//           { path: 'new', element: <NewEventPage /> },
+//           { path: ':eventId/edit', element: <EditEventPage /> },
+//         ],
+//       },
+//     ],
+//   },
+// ]);
+
 const router = createBrowserRouter([
   {
     // Nested routes
@@ -114,15 +170,33 @@ const router = createBrowserRouter([
             // errorElement
             loader: eventsLoader,
           },
-          // Register loader
           {
             path: ':eventId',
-            element: <EventDetailPage />,
-            loader: eventDetailLoader,
+            // However this is a route that doesn't load any element. Instead we just add children and the children of this route will be
+            id: 'event-detail',
+            loader: eventDetailLoader, // Share same loader
+            // Nested routes
+            // We don't want any shared layout
+            // Note: To make sure that we use this loader's data so the data from this parent route we should add a special id property which which we can add to our route definitions
+            children: [
+              {
+                // path: '',
+                index: true,
+                element: <EventDetailPage />,
+                // loader: eventDetailLoader,
+              },
+              { path: 'edit', element: <EditEventPage /> },
+            ],
           },
+          // Register loader
+          // {
+          //   path: ':eventId',
+          //   element: <EventDetailPage />,
+          //   loader: eventDetailLoader,
+          // },
           // React router is smart so it would prefer /events/new over /events/:eventId router definition
           { path: 'new', element: <NewEventPage /> },
-          { path: ':eventId/edit', element: <EditEventPage /> },
+          // { path: ':eventId/edit', element: <EditEventPage /> },
         ],
       },
     ],
